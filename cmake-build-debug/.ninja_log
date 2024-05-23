@@ -1,0 +1,20 @@
+# ninja log v5
+1	273	7381822645579423	build.ninja	fa2efa13962ec040
+17	770	7381822653885049	CMakeFiles/adjacency_list.dir/main.cpp.obj	7f8be11d0ddf4dcb
+772	1171	7381822657864623	adjacency_list.exe	236982bde58b6412
+5	1120	7381833094941109	CMakeFiles/adjacency_list.dir/main.cpp.obj	7f8be11d0ddf4dcb
+1121	1245	7381833096164070	adjacency_list.exe	236982bde58b6412
+6	395	7381833613800642	CMakeFiles/adjacency_list.dir/main.cpp.obj	7f8be11d0ddf4dcb
+395	493	7381833614753134	adjacency_list.exe	236982bde58b6412
+16	401	7381834652080272	CMakeFiles/adjacency_list.dir/main.cpp.obj	7f8be11d0ddf4dcb
+402	503	7381834653063765	adjacency_list.exe	236982bde58b6412
+18	392	7381834799115153	CMakeFiles/adjacency_list.dir/main.cpp.obj	7f8be11d0ddf4dcb
+392	494	7381834800092183	adjacency_list.exe	236982bde58b6412
+15	392	7381834908837638	CMakeFiles/adjacency_list.dir/main.cpp.obj	7f8be11d0ddf4dcb
+393	490	7381834909785474	adjacency_list.exe	236982bde58b6412
+16	711	7381835376842851	CMakeFiles/adjacency_list.dir/main.cpp.obj	7f8be11d0ddf4dcb
+712	811	7381835377813335	adjacency_list.exe	236982bde58b6412
+17	397	7381836330292882	CMakeFiles/adjacency_list.dir/main.cpp.obj	7f8be11d0ddf4dcb
+398	500	7381836331288543	adjacency_list.exe	236982bde58b6412
+16	397	7381836640520116	CMakeFiles/adjacency_list.dir/main.cpp.obj	7f8be11d0ddf4dcb
+398	497	7381836641476053	adjacency_list.exe	236982bde58b6412
