@@ -1,4 +1,5 @@
 # ninja log v5
-611	1578	7382622976258827	build.ninja	fa2efa13962ec040
-17	424	7382621382931779	CMakeFiles/adjacency_list.dir/main.cpp.obj	7f8be11d0ddf4dcb
-424	525	7382621383910529	adjacency_list.exe	236982bde58b6412
+2	262	7382625381990103	build.ninja	fa2efa13962ec040
+17	416	7382624587069711	CMakeFiles/adjacency_list.dir/main.cpp.obj	7f8be11d0ddf4dcb
+417	520	7382624588077021	adjacency_list.exe	236982bde58b6412
+8	265	7382625381990103	build.ninja	fa2efa13962ec040
