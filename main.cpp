@@ -21,5 +21,7 @@ int main() {
     graph->removeEdge('c');
     graph->insertEdge(3,4,'e');
     graph->print();
+    cout << graph->endVertices('d')[0] << " " << graph->endVertices('d')[1] << endl;
+    cout << graph->opposite('e',4) << endl;
     return 0;
 }

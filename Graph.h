@@ -38,8 +38,37 @@ public:
         }
         return '\0';
     }
+    int* endVertices(char e){
+        int* arr = new int[2];
+        Edge* edge = nullptr;
+        for(int i=0;i<numOfEdges;i++){
+            if(edges[i]->name == e){
+                edge = edges[i];
+                break;
+            }
+        }
+        if(!edge) return nullptr; //wa nakita
+        arr[0] = edge->v1;
+        arr[1] = edge->v2;
+        return arr;
+    }
+    int opposite(char e,int v){
+        Edge* edge = nullptr;
+        for(int i=0;i<numOfEdges;i++){
+            if(edges[i]->name == e){
+                edge = edges[i];
+                break;
+            }
+        }
+        if(!edge) return -69; //wa nakita
+        if(edge->v1 == v){
+            return edge->v2;
+        } else{
+            return edge->v1;
+        }
+    }
     int outDegree(int v){
-        Vertex* vertex;
+        Vertex* vertex = nullptr;
         for(int i=0;i<numOfVertices;i++){
             if(vertices[i]->element == v){
                 vertex = vertices[i];
@@ -96,7 +125,6 @@ public:
         delete deleteThis;
         numOfVertices--;
         Edge* deleteThisEdge;
-        int edgeIdx = -1;
         for(int i=0;i<numOfEdges;i++){
             if(edges[i]->v1 == v|| edges[i]->v2 == v){
                 deleteThisEdge = edges[i];
