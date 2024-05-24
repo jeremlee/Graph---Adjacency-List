@@ -8,7 +8,7 @@
 #define ADJACENCY_LIST_GRAPH_H
 using namespace std;
 
-class Graph {
+class Graph { //no remove
    Vertex** s_vertices;
    int num_vert;
    int s_edges[10];

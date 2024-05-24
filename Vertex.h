@@ -6,7 +6,7 @@
 #define ADJACENCY_LIST_VERTEX_H
 
 
-class Vertex {
+class Vertex { //no remove
     int name;
     int in_edges[10];
     int out_edges[10];

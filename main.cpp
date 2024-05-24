@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int main() {
+int main() { //no remove
     auto* graph = new Graph();
     graph->insertVertex(1);
     graph->insertVertex(2);
