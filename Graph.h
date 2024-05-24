@@ -30,6 +30,29 @@ public:
     int numVertices(){
         return numOfVertices;
     }
+    char getEdge(int u, int v){
+        for(int i=0;i<numOfEdges;i++){
+            if((edges[i]->v1 == u && edges[i]->v2 == v) ||(edges[i]->v1 == v && edges[i]->v2 == u)){
+                return edges[i]->name;
+            }
+        }
+        return '\0';
+    }
+    int outDegree(int v){
+        Vertex* vertex;
+        for(int i=0;i<numOfVertices;i++){
+            if(vertices[i]->element == v){
+                vertex = vertices[i];
+            }
+        }
+        if(vertex){
+            return vertex->list_size;
+        }
+        return 0;
+    }
+    int inDegree(int v){
+        return outDegree(v); //undirected graph
+    }
     void insertVertex(int v){
         if(numOfVertices<10){
             vertices[numOfVertices++] = new Vertex(v);
@@ -56,25 +79,64 @@ public:
             return;
         }
     }
-    char getEdge(int u, int v){
-        for(int i=0;i<numOfEdges;i++){
-            if((edges[i]->v1 == u && edges[i]->v2 == v) ||(edges[i]->v1 == v && edges[i]->v2 == u)){
-                return edges[i]->name;
-            }
-        }
-        return '\0';
-    }
-    int outDegree(int v){
-        Vertex* vertex;
+    void removeVertex(int v){
+        int idx = -1;
+        Vertex* deleteThis;
         for(int i=0;i<numOfVertices;i++){
             if(vertices[i]->element == v){
-                vertex = vertices[i];
+                idx = i;
+                deleteThis = vertices[i];
+                break;
             }
         }
-        if(vertex){
-            return vertex->list_size;
+        if(idx == -1) return; //wa nakit-an
+        for(int i=idx;i<numOfVertices-1;i++){
+            vertices[i] = vertices[i+1];
         }
-        return 0;
+        delete deleteThis;
+        numOfVertices--;
+        Edge* deleteThisEdge;
+        int edgeIdx = -1;
+        for(int i=0;i<numOfEdges;i++){
+            if(edges[i]->v1 == v|| edges[i]->v2 == v){
+                deleteThisEdge = edges[i];
+                delete deleteThisEdge;
+                for(int j=i;j<numOfEdges;j++){
+                    edges[j] = edges[j+1];
+                }
+                numOfEdges--;
+                i--;
+            }
+        }
+        for(int i=0;i<numOfVertices;i++){
+            for(int j=0;j<vertices[i]->list_size;j++){
+                if(vertices[i]->adjacency_list[j] == v){
+                    vertices[i]->removeNode(v);
+                }
+            }
+        }
+    }
+    void removeEdge(char e){
+        Edge* toRemove = nullptr;
+        int idx = -1;
+        for(int i=0;i<numOfEdges;i++){
+            if(edges[i]->name == e){
+                toRemove = edges[i];
+                break;
+            }
+        }
+        if(!toRemove) return; //wa nakita
+        for(int i=0;i<numOfVertices;i++){
+            if(vertices[i]->element == toRemove->v1){
+                vertices[i]->removeNode(toRemove->v2);
+            } else if(vertices[i]->element == toRemove->v2){
+                vertices[i]->removeNode(toRemove->v1);
+            }
+        }
+        for(int i=idx;i<numOfEdges-1;i++){
+            edges[i] = edges[i+1];
+        }
+        numOfEdges--;
     }
     void print(){
         cout << "Edges: ";

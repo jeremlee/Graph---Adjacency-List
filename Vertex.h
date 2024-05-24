@@ -26,6 +26,19 @@ public:
             adjacency_list[list_size++] = node;
         }
     }
+    void removeNode(int num){
+        int idx = -1;
+        for(int i=0;i<list_size;i++){
+            if(adjacency_list[i] == num){
+                idx = i;
+            }
+        }
+        if(idx == -1) return; //wa nakit-an
+        for(int i=idx;i<list_size-1;i++){
+            adjacency_list[i] = adjacency_list[i+1];
+        }
+        list_size--;
+    }
 
 };
 
