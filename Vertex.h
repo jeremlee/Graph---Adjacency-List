@@ -7,39 +7,40 @@
 
 
 class Vertex {
+    int name;
+    int in_edges[10];
+    int out_edges[10];
+    int in_count;
+    int out_count;
 public:
-    int element;
-    int* adjacency_list;
-    int list_size;
-    Vertex(){
-        element = -1;
-        adjacency_list = new int[10];
-        list_size = 0;
+    Vertex(int name){
+        this->name = name;
+        in_count = 0;
+        out_count = 0;
     }
-    Vertex(int element){
-        this->element = element;
-        adjacency_list = new int[10];
-        list_size = 0;
+    int getName(){
+        return name;
     }
-    void addNode(int node){
-        if(list_size < 10){
-            adjacency_list[list_size++] = node;
-        }
+    int getOutCount(){
+        return out_count;
     }
-    void removeNode(int num){
-        int idx = -1;
-        for(int i=0;i<list_size;i++){
-            if(adjacency_list[i] == num){
-                idx = i;
-            }
-        }
-        if(idx == -1) return; //wa nakit-an
-        for(int i=idx;i<list_size-1;i++){
-            adjacency_list[i] = adjacency_list[i+1];
-        }
-        list_size--;
+    int getInCount(){
+        return in_count;
     }
-
+    int* getInEdges(){
+        return in_edges;
+    }
+    int* getOutEdges(){
+        return out_edges;
+    }
+    void addIncomingEdge(int x){
+        if(in_count == 10) return;
+        in_edges[in_count++] = x;
+    }
+    void addOutcomingEdge(int x){
+        if(out_count == 10) return;
+        out_edges[out_count++] = x;
+    }
 };
 
 

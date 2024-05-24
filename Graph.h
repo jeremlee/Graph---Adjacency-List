@@ -3,186 +3,184 @@
 //
 #include<iostream>
 #include"Vertex.h"
-#include "Edge.h"
 
 #ifndef ADJACENCY_LIST_GRAPH_H
 #define ADJACENCY_LIST_GRAPH_H
 using namespace std;
 
 class Graph {
-   Vertex** vertices;
-   int numOfVertices;
-   Edge** edges;
-   int numOfEdges;
+   Vertex** s_vertices;
+   int num_vert;
+   int s_edges[10];
+   int num_edge;
 public:
     Graph(){
-        numOfVertices = 0;
-        vertices = new Vertex*[10];
+        num_vert = 0;
+        num_edge = 0;
+        s_vertices = new Vertex*[10];
         for(int i=0;i<10;i++){
-            vertices[i] = nullptr;
+            s_vertices[i] = nullptr;
         }
-        edges = new Edge*[10];
-        numOfEdges = 0;
     }
-    int numEdges(){
-        return numOfEdges;
+    int* edges(){
+        return s_edges;
     }
-    int numVertices(){
-        return numOfVertices;
-    }
-    char getEdge(int u, int v){
-        for(int i=0;i<numOfEdges;i++){
-            if((edges[i]->v1 == u && edges[i]->v2 == v) ||(edges[i]->v1 == v && edges[i]->v2 == u)){
-                return edges[i]->name;
-            }
+    int* vertices(){
+        int* arr = new int[num_vert];
+        for(int i=0;i<num_vert;i++){
+            arr[i] = s_vertices[i]->getName();
         }
-        return '\0';
-    }
-    int* endVertices(char e){
-        int* arr = new int[2];
-        Edge* edge = nullptr;
-        for(int i=0;i<numOfEdges;i++){
-            if(edges[i]->name == e){
-                edge = edges[i];
-                break;
-            }
-        }
-        if(!edge) return nullptr; //wa nakita
-        arr[0] = edge->v1;
-        arr[1] = edge->v2;
         return arr;
     }
-    int opposite(char e,int v){
-        Edge* edge = nullptr;
-        for(int i=0;i<numOfEdges;i++){
-            if(edges[i]->name == e){
-                edge = edges[i];
-                break;
-            }
-        }
-        if(!edge) return -69; //wa nakita
-        if(edge->v1 == v){
-            return edge->v2;
-        } else{
-            return edge->v1;
-        }
+    int numEdges(){
+        return num_edge;
+    }
+    int numVertices(){
+        return num_vert;
     }
     int outDegree(int v){
-        Vertex* vertex = nullptr;
-        for(int i=0;i<numOfVertices;i++){
-            if(vertices[i]->element == v){
-                vertex = vertices[i];
+        for(int i=0;i<num_vert;i++){
+            if(s_vertices[i]->getName() == v){
+                return s_vertices[i]->getOutCount();
             }
         }
-        if(vertex){
-            return vertex->list_size;
-        }
-        return 0;
+        return -1;
     }
     int inDegree(int v){
-        return outDegree(v); //undirected graph
+        for(int i=0;i<num_vert;i++){
+            if(s_vertices[i]->getName() == v){
+                return s_vertices[i]->getInCount();
+            }
+        }
+        return -1;
     }
-    void insertVertex(int v){
-        if(numOfVertices<10){
-            vertices[numOfVertices++] = new Vertex(v);
+    int* outgoingEdges(int v){
+        for(int i=0;i<num_vert;i++){
+            if(s_vertices[i]->getName() == v){
+                return s_vertices[i]->getOutEdges();
+            }
         }
+        return nullptr;
     }
-    void insertEdge(int u,int v, char x){
-        if(numOfEdges == 10){
-            return; //full
-        }
-        int count = 0; //must be 2 to be successful, assuming there are no duplicate vertices
-        for(int i=0;i<numOfVertices;i++){
-            if(vertices[i]->element == u){
-                vertices[i]->addNode(v);
-                count++;
-            }
-            if(vertices[i]->element == v){
-                vertices[i]->addNode(u);
-                count++;
+    int* incomingEdges(int v){
+        for(int i=0;i<num_vert;i++){
+            if(s_vertices[i]->getName() == v){
+                return s_vertices[i]->getInEdges();
             }
         }
-        if(count == 2){
-            edges[numOfEdges++] = new Edge(u,v,x);
-        } else{
-            return;
-        }
+        return nullptr;
     }
-    void removeVertex(int v){
-        int idx = -1;
-        Vertex* deleteThis;
-        for(int i=0;i<numOfVertices;i++){
-            if(vertices[i]->element == v){
-                idx = i;
-                deleteThis = vertices[i];
-                break;
+    int getEdge(int u, int v){
+        Vertex* uu = nullptr;
+        Vertex* vv = nullptr;
+        for(int i=0;i<num_vert;i++){
+            if(s_vertices[i]->getName() == u){
+                uu = s_vertices[i];
+            }
+            if(s_vertices[i]->getName() == v){
+                vv = s_vertices[i];
             }
         }
-        if(idx == -1) return; //wa nakit-an
-        for(int i=idx;i<numOfVertices-1;i++){
-            vertices[i] = vertices[i+1];
-        }
-        delete deleteThis;
-        numOfVertices--;
-        Edge* deleteThisEdge;
-        for(int i=0;i<numOfEdges;i++){
-            if(edges[i]->v1 == v|| edges[i]->v2 == v){
-                deleteThisEdge = edges[i];
-                delete deleteThisEdge;
-                for(int j=i;j<numOfEdges;j++){
-                    edges[j] = edges[j+1];
-                }
-                numOfEdges--;
-                i--;
-            }
-        }
-        for(int i=0;i<numOfVertices;i++){
-            for(int j=0;j<vertices[i]->list_size;j++){
-                if(vertices[i]->adjacency_list[j] == v){
-                    vertices[i]->removeNode(v);
+        if(!uu || !vv) return -1;
+        int* out = uu->getOutEdges();
+        int* in = vv->getInEdges();
+        for(int i=0;i<uu->getOutCount();i++){
+            for(int j=0;j<vv->getInCount();j++){
+                if(out[i] == in[j]){
+                    return out[i];
                 }
             }
         }
+        return -1;
     }
-    void removeEdge(char e){
-        Edge* toRemove = nullptr;
-        int idx = -1;
-        for(int i=0;i<numOfEdges;i++){
-            if(edges[i]->name == e){
-                toRemove = edges[i];
+    int* endVertices(int e){
+        int* end = new int[2];
+        end[0] = -1;
+        end[1] = -1;
+        int* in;
+        int* out;
+        for(int i=0;i<num_vert;i++){
+            out = s_vertices[i]->getOutEdges();
+            in = s_vertices[i]->getInEdges();
+            for(int j=0;j<s_vertices[i]->getOutCount();j++){
+                if(out[j] == e){
+                    end[0] = s_vertices[i]->getName();
+                }
+            }
+            for(int j=0;j<s_vertices[i]->getInCount();j++){
+                if(in[j] == e){
+                    end[1] = s_vertices[i]->getName();
+                }
+            }
+        }
+        return end;
+    }
+
+    int opposite(int v, int e){
+        int vIdx = -1;
+        int* in;
+        int* out;
+        for(int i=0;i<num_vert;i++){
+            if(s_vertices[i]->getName() == v){
+                vIdx = i;
                 break;
             }
         }
-        if(!toRemove) return; //wa nakita
-        for(int i=0;i<numOfVertices;i++){
-            if(vertices[i]->element == toRemove->v1){
-                vertices[i]->removeNode(toRemove->v2);
-            } else if(vertices[i]->element == toRemove->v2){
-                vertices[i]->removeNode(toRemove->v1);
+        for(int i=0;i<num_vert;i++){
+            if(i == vIdx) continue;
+            out = s_vertices[i]->getOutEdges();
+            in = s_vertices[i]->getInEdges();
+            for(int j=0;j<s_vertices[i]->getOutCount();j++){
+                if(out[j] == e){
+                    return s_vertices[i]->getName();
+                }
+            }
+            for(int j=0;j<s_vertices[i]->getInCount();j++){
+                if(in[j] == e){
+                    return s_vertices[i]->getName();
+                }
             }
         }
-        for(int i=idx;i<numOfEdges-1;i++){
-            edges[i] = edges[i+1];
+        return -1;
+    }
+
+    void insertVertex(int x){
+        if(num_vert == 10) return;
+        s_vertices[num_vert++] = new Vertex(x);
+    }
+    void insertEdge(int u, int v, int x){
+        if(num_edge == 10) return;
+        Vertex* uu = nullptr;
+        Vertex* vv = nullptr;
+        for(int i=0;i<num_vert;i++){
+            if(s_vertices[i]->getName() == u){
+                uu = s_vertices[i];
+            }
+            if(s_vertices[i]->getName() == v){
+                vv = s_vertices[i];
+            }
         }
-        numOfEdges--;
+        if(!uu || !vv) return;
+        uu->addOutcomingEdge(x);
+        vv->addIncomingEdge(x);
+        s_edges[num_edge++] = x;
     }
     void print(){
-        cout << "Edges: ";
-        for(int i=0;i<numOfEdges;i++){
-            cout << edges[i]->name << " ";
-        }
-        cout << endl;
-        cout << "Vertices (Adjacency List): " << endl;
-        for(int i=0;i<numOfVertices;i++){
-            cout << vertices[i]->element << " -> ";
-            for(int j=0;j<vertices[i]->list_size;j++){
-                if(vertices[i]->adjacency_list[j]){
-                    cout << vertices[i]->adjacency_list[j] << " ";
-                }
+        for(int i=0;i<num_vert;i++){
+            cout << "Vertex " << s_vertices[i]->getName() << " ";
+            cout << " | Incoming: ";
+            int* in = s_vertices[i]->getInEdges();
+            for(int j=0;j<s_vertices[i]->getInCount();j++){
+                cout << in[j] << " ";
+            }
+            cout << " | ";
+            cout << "Outcoming: ";
+            int* out = s_vertices[i]->getOutEdges();
+            for(int j=0;j<s_vertices[i]->getOutCount();j++){
+                cout << out[j] << " ";
             }
             cout << endl;
         }
-        cout << endl;
     }
 };
 
